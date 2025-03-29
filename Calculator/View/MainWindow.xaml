@@ -1,0 +1,219 @@
+﻿<Window x:Class="Calculator.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Calculator.ViewModel"
+        mc:Ignorable="d"
+        Focusable="True"
+        FocusManager.IsFocusScope="True"
+        ResizeMode="NoResize"
+        KeyDown="Window_KeyDown"
+        Title="Calculator" Height="446" Width="312" MinHeight="468" MinWidth="326" Background="#3a3c40">
+
+    <Window.DataContext>
+        <local:CalculatorViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Width" Value="78"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="BorderBrush" Value="#3a3c40"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                            CornerRadius="3" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        
+    </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding CopyCommand}" Key="C" Modifiers="Control" />
+        <KeyBinding Command="{Binding CutCommand}" Key="X" Modifiers="Control" />
+        <KeyBinding Command="{Binding PasteCommand}" Key="V" Modifiers="Control" />
+    </Window.InputBindings>
+
+    <Grid>
+
+
+
+        <Menu VerticalAlignment="Top">
+
+            <MenuItem Header="_View">
+
+                <MenuItem Header="_Standard"
+                          IsCheckable="True"
+                          IsChecked="{Binding IsStandardMode}"
+                          Command="{Binding SetStandardModeCommand}" />
+
+
+                <MenuItem Header="_Programmer"
+                         IsCheckable="True"
+                         IsChecked="{Binding IsProgrammerMode}"
+                         Command="{Binding SetProgrammerModeCommand}" />
+            </MenuItem>
+
+            <MenuItem Header="_File">
+
+                <MenuItem Header="_Cut" Command="{Binding CutCommand}"/>
+                <MenuItem Header="_Copy" Command="{Binding CopyCommand}"/>
+                <MenuItem Header="_Paste" Command="{Binding PasteCommand}"/>
+
+                <Separator/>
+                <MenuItem Header="_Digit Grouping" 
+                          IsCheckable="True"
+                          IsChecked="{Binding IsDigitGroupingEnabled}"/>
+            </MenuItem>
+
+
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About" Click="AboutMenuItem_Click" />
+            </MenuItem>
+        </Menu>
+
+
+        <Grid x:Name="GridStandard" Visibility="{Binding StandardGridVisibility}">
+
+            <TextBlock HorizontalAlignment="Left" Margin="110,25,0,0" TextWrapping="Wrap" Text="{Binding HistoryDisplay}" Foreground="AliceBlue" 
+         Background="#3a3c40" FontSize="10" VerticalAlignment="Top" TextAlignment="Right" Width="202" Height="21"/>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,46,0,0"
+           Text="{Binding Display}" 
+           FontSize="48" 
+           FontFamily="Courier New" 
+           Foreground="AliceBlue" 
+           Background="#3a3c40"
+           Padding="10"
+           Width="312" Height="62" 
+           TextAlignment="Right"/>
+            <Button Content="%" HorizontalAlignment="Left" Margin="0,178,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}" CommandParameter="%"/>
+            <Button Content="8" HorizontalAlignment="Left" Margin="78,262,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="8"/>
+            <Button Content="/" HorizontalAlignment="Left" Margin="234,220,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}"  CommandParameter="/"/>
+            <Button Content="X" HorizontalAlignment="Left" Margin="234,262,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}"  CommandParameter="*"/>
+            <Button Content="+/-" HorizontalAlignment="Left" Margin="0,388,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NegativeCommand}"  CommandParameter="+/-"/>
+            <Button Content="0" HorizontalAlignment="Left" Margin="78,388,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="0" />
+            <Button Content="." HorizontalAlignment="Left" Margin="156,388,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="."/>
+            <Button Content="=" HorizontalAlignment="Left" Margin="234,388,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Background="DarkOrange" Command="{Binding CalculateCommand}"/>
+            <Button Content="1" HorizontalAlignment="Left" Margin="0,346,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="1"/>
+            <Button Content="2" HorizontalAlignment="Left" Margin="78,346,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="2"/>
+            <Button Content="3" HorizontalAlignment="Left" Margin="156,346,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="3"/>
+            <Button Content="+" HorizontalAlignment="Left" Margin="234,346,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}" CommandParameter="+"/>
+            <Button Content="4" HorizontalAlignment="Left" Margin="0,304,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="4"/>
+            <Button Content="5" HorizontalAlignment="Left" Margin="78,304,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="5"/>
+            <Button Content="6" HorizontalAlignment="Left" Margin="156,304,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="6"/>
+            <Button Content="-" HorizontalAlignment="Left" Margin="234,304,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}"  CommandParameter="-"/>
+            <Button Content="1/x" HorizontalAlignment="Left" Margin="0,220,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding InverseCommand}"/>
+            <Button Content="x²" HorizontalAlignment="Left" Margin="78,220,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding SquareCommand}"/>
+            <Button HorizontalAlignment="Left" Margin="156,220,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding SquareRootCommand}">
+                <TextBlock FontSize="16">
+                  <Run Text="2" BaselineAlignment="Superscript" FontSize="10"/>
+                  <Run Text="√" />
+                  <Run Text="x" />
+                </TextBlock>
+            </Button>
+
+            <Button Content="C" HorizontalAlignment="Left" Margin="156,178,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding ClearAllCommand}"/>
+            <Button Content="7" HorizontalAlignment="Left" Margin="0,262,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="7"/>
+            <Button Content="CE" HorizontalAlignment="Left" Margin="78,178,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding ClearEntryCommand}"/>
+            <Button Content="9" HorizontalAlignment="Left" Margin="156,262,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="9"/>
+            <Button Content="BS" HorizontalAlignment="Left" Margin="234,178,0,0" VerticalAlignment="Top" Height="42" Width="78" Style="{StaticResource RoundedButton}" Command="{Binding BackspaceCommand}"/>
+            <Button Content="MR" HorizontalAlignment="Left" Margin="60,146,0,0" VerticalAlignment="Top" Width="39" Height="32" Background="#3a3c40" Foreground="AliceBlue" BorderBrush="#3a3c40" Command="{Binding MemoryRecallCommand}"/>
+            <Button Content="MC" HorizontalAlignment="Left" Margin="10,146,0,0" VerticalAlignment="Top" Width="39" Height="32" Background="#3a3c40" Foreground="AliceBlue" BorderBrush="#3a3c40" Command="{Binding MemoryClearCommand}"/>
+            <Button Content="M+" HorizontalAlignment="Left" Margin="110,146,0,0" VerticalAlignment="Top" Width="39" Height="32" Background="#3a3c40" Foreground="AliceBlue" BorderBrush="#3a3c40" Command="{Binding MemoryAddCommand}"/>
+            <Button Content="M-" HorizontalAlignment="Left" Margin="160,146,0,0" VerticalAlignment="Top" Width="39" Height="32" Background="#3a3c40" Foreground="AliceBlue" BorderBrush="#3a3c40" Command="{Binding MemorySubtractCommand}"/>
+            <Button Content="MS" HorizontalAlignment="Left" Margin="210,146,0,0" VerticalAlignment="Top" Width="39" Height="32" Background="#3a3c40" Foreground="AliceBlue" BorderBrush="#3a3c40" Command="{Binding MemoryStoreCommand}"/>
+            <Button Content="M" HorizontalAlignment="Left" Margin="260,146, 0,0" VerticalAlignment="Top" Width="39" Height="32" Background="#3a3c40" Foreground="AliceBlue" BorderBrush="#3a3c40" RenderTransformOrigin="0.464,0.476" Command="{Binding MemoryShowPopupCommand}"/>
+            <Popup IsOpen="{Binding IsMemoryPopupOpen}"
+               StaysOpen="False" Placement="MousePoint">
+                <Border Background="White" CornerRadius="4" Padding="5">
+                    <ListBox ItemsSource="{Binding MemoryValues}"
+                         MouseDoubleClick="MemoryListBox_MouseDoubleClick"
+                         Width="120"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </Border>
+            </Popup>
+
+
+        </Grid>
+
+        <Grid x:Name="Prog" Visibility="{Binding ProgrammerGridVisibility}">
+            <Button Content="vv" HorizontalAlignment="Left" Margin="62,178,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}" CommandParameter="%"/>
+            <Button Content="8" HorizontalAlignment="Left" Margin="124,262,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="8"/>
+            <Button Content="/" HorizontalAlignment="Left" Margin="248,220,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}"  CommandParameter="/"/>
+            <Button Content="X" HorizontalAlignment="Left" Margin="248,262,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}"  CommandParameter="*"/>
+            <Button Content="+/-" HorizontalAlignment="Left" Margin="62,388,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NegativeCommand}"  CommandParameter="+/-"/>
+            <Button Content="0" HorizontalAlignment="Left" Margin="124,388,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="0" />
+            <Button Content="." HorizontalAlignment="Left" Margin="186,388,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="."/>
+            <Button Content="=" HorizontalAlignment="Left" Margin="248,388,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Background="DarkOrange" Command="{Binding CalculateCommand}"/>
+            <Button Content="1" HorizontalAlignment="Left" Margin="62,346,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="1"/>
+            <Button Content="2" HorizontalAlignment="Left" Margin="124,346,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="2"/>
+            <Button Content="3" HorizontalAlignment="Left" Margin="186,346,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="3"/>
+            <Button Content="+" HorizontalAlignment="Left" Margin="248,346,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}" CommandParameter="+"/>
+            <Button Content="4" HorizontalAlignment="Left" Margin="62,304,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="4"/>
+            <Button Content="5" HorizontalAlignment="Left" Margin="124,304,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="5"/>
+            <Button Content="6" HorizontalAlignment="Left" Margin="186,304,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="6"/>
+            <Button Content="-" HorizontalAlignment="Left" Margin="248,304,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}"  CommandParameter="-"/>
+            <Button Content="(" HorizontalAlignment="Left" Margin="62,220,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding InverseCommand}"/>
+            <Button Content=")" HorizontalAlignment="Left" Margin="124,220,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding SquareCommand}"/>
+            <Button Content="%" HorizontalAlignment="Left" Margin="186,220,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding OperationClickCommand}" CommandParameter="%"/>
+            <Button Content="C" HorizontalAlignment="Left" Margin="186,178,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding ClearAllCommand}"/>
+            <Button Content="7" HorizontalAlignment="Left" Margin="62,262,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="7"/>
+            <Button Content=">>" HorizontalAlignment="Left" Margin="124,178,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}"/>
+            <Button Content="9" HorizontalAlignment="Left" Margin="186,262,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="9"/>
+            <Button Content="BS" HorizontalAlignment="Left" Margin="248,178,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding BackspaceCommand}"/>
+            <Button Content="A" HorizontalAlignment="Left" Margin="0,178,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="A"/>
+            <Button Content="B" HorizontalAlignment="Left" Margin="0,220,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="B"/>
+            <Button Content="C" HorizontalAlignment="Left" Margin="0,262,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="C"/>
+            <Button Content="D" HorizontalAlignment="Left" Margin="0,304,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="D"/>
+            <Button Content="E" HorizontalAlignment="Left" Margin="0,346,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="E"/>
+            <Button Content="F" HorizontalAlignment="Left" Margin="0,388,0,0" VerticalAlignment="Top" Height="42" Width="62" Style="{StaticResource RoundedButton}" Command="{Binding NumberClickCommand}" CommandParameter="F"/>
+            <Button Content="HEX" HorizontalAlignment="Left" Margin="0,105,0,0" VerticalAlignment="Top" Height="17" Width="31" Command="{Binding SwitchBaseCommand}" CommandParameter="16"/>
+            <Button Content="DEC" HorizontalAlignment="Left" Margin="0,120,0,0" VerticalAlignment="Top" Height="17" Width="31" Command="{Binding SwitchBaseCommand}" CommandParameter="10"/>
+            <Button Content="OCT" HorizontalAlignment="Left" Margin="0,135,0,0" VerticalAlignment="Top" Height="17" Width="31" Command="{Binding SwitchBaseCommand}" CommandParameter="8"/>
+            <Button Content="BIN" HorizontalAlignment="Left" Margin="0,150,0,0" VerticalAlignment="Top" Height="17" Width="31" Command="{Binding SwitchBaseCommand}" CommandParameter="2"/>
+            <TextBlock HorizontalAlignment="Left" Margin="36,106,0,0" TextWrapping="Wrap" Text="{Binding HexValue}" VerticalAlignment="Top" Foreground="AliceBlue" />
+            <TextBlock HorizontalAlignment="Left" Margin="36,122,0,0" TextWrapping="Wrap" Text="{Binding DecValue}" VerticalAlignment="Top"  Foreground="AliceBlue"/>
+            <TextBlock HorizontalAlignment="Left" Margin="36,138,0,0" TextWrapping="Wrap" Text="{Binding OctValue}" VerticalAlignment="Top"  Foreground="AliceBlue"/>
+            <TextBlock HorizontalAlignment="Left" Margin="36,152,0,0" TextWrapping="Wrap" Text="{Binding BinValue}" VerticalAlignment="Top"  Foreground="AliceBlue"/>
+            <TextBlock HorizontalAlignment="Left" Margin="110,25,0,0" TextWrapping="Wrap" Text="{Binding HistoryDisplay}" Foreground="AliceBlue" 
+             Background="#3a3c40" FontSize="10" VerticalAlignment="Top" TextAlignment="Right" Width="202" Height="21"/>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,46,0,0"
+              Text="{Binding Display}" 
+              FontSize="48" 
+              FontFamily="Courier New" 
+              Foreground="AliceBlue" 
+              Background="#3a3c40"
+              Padding="10"
+              Width="312" Height="62" 
+              TextAlignment="Right"/>
+            <Button Content="MS" HorizontalAlignment="Left" Margin="210,146,0,0" VerticalAlignment="Top" Width="39" Height="32" Background="#3a3c40" Foreground="AliceBlue" BorderBrush="#3a3c40" Command="{Binding MemoryStoreCommand}"/>
+            <Button Content="M" HorizontalAlignment="Left" Margin="260,146, 0,0" VerticalAlignment="Top" Width="39" Height="32" Background="#3a3c40" Foreground="AliceBlue" BorderBrush="#3a3c40" RenderTransformOrigin="0.464,0.476" Command="{Binding MemoryShowPopupCommand}"/>
+            <Popup IsOpen="{Binding IsMemoryPopupOpen}"
+                   StaysOpen="False" Placement="MousePoint">
+                <Border Background="White" CornerRadius="4" Padding="5">
+                <ListBox ItemsSource="{Binding MemoryValues}"
+                      MouseDoubleClick="MemoryListBox_MouseDoubleClick"
+                      Width="120"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </Border>
+            </Popup>
+
+        </Grid>
+
+
+
+    </Grid>
+</Window>
